@@ -185,27 +185,6 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         </div>
       </div>
 
-      {/* Sandboxed Frame Explanation Banner */}
-      <div className="bg-yellow-400/10 border border-yellow-400/30 rounded p-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs">
-        <div className="flex items-start gap-2 text-yellow-200">
-          <ExternalLink className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
-          <div>
-            <strong className="text-yellow-400 uppercase font-black tracking-wider block md:inline mr-1">
-              Preview Frame Restriction Notice:
-            </strong>
-            <span>
-              If you see <em>"cannot be loaded inside a restricted (sandboxed) frame"</em>, it means the preview window is blocking embed scripts. Click <strong>Launch Full Stream</strong> to watch cleanly in a new window, or switch servers above.
-            </span>
-          </div>
-        </div>
-        <button
-          onClick={handleOpenNewTab}
-          className="px-4 py-2 bg-yellow-400 text-black font-black uppercase text-xs rounded hover:bg-yellow-300 transition shrink-0 flex items-center gap-1.5 shadow-lg shadow-yellow-400/10"
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-          <span>Launch Full Stream</span>
-        </button>
-      </div>
 
       {/* Player Iframe Window */}
       <div className="relative aspect-video w-full rounded overflow-hidden bg-black border border-white/10 shadow-2xl">
