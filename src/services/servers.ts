@@ -2,40 +2,32 @@ import { VideoServer, ContentType } from '../types';
 
 export const SERVERS: VideoServer[] = [
   {
-    id: 'vidlink',
-    name: 'Server 1 (VidLink Ultra)',
-    quality: '4K / 1080p',
-    speed: 'Ultra Fast',
-    reliability: 99,
-    description: 'Primary high-speed HTML5 player with customizable subtitles and audio tracks.',
-  },
-  {
     id: 'vidsrc-me',
-    name: 'Server 2 (VidSrc Pro)',
+    name: 'Server 1 (VidSrc Pro)',
     quality: '1080p / 60fps',
     speed: 'Ultra Fast',
-    reliability: 98,
-    description: 'Reliable global CDN source with multi-language subtitle support.',
+    reliability: 99,
+    description: 'Primary high-speed CDN source with multi-language subtitle support.',
   },
   {
     id: 'vidsrc-to',
-    name: 'Server 3 (VidSrc TO HD)',
+    name: 'Server 2 (VidSrc TO HD)',
     quality: '1080p / 720p',
     speed: 'Fast',
-    reliability: 97,
+    reliability: 98,
     description: 'Multi-server mirror with automatic fallback and fast buffering.',
   },
   {
     id: 'vidsrc-pm',
-    name: 'Server 4 (VidSrc PM)',
+    name: 'Server 3 (VidSrc PM)',
     quality: '1080p HD',
     speed: 'Fast',
-    reliability: 96,
+    reliability: 97,
     description: 'High availability mirror for latest movies and trending series.',
   },
   {
     id: 'vidsrc-in',
-    name: 'Server 5 (VidSrc IN)',
+    name: 'Server 4 (VidSrc IN)',
     quality: '1080p',
     speed: 'Fast',
     reliability: 95,
@@ -43,7 +35,7 @@ export const SERVERS: VideoServer[] = [
   },
   {
     id: 'rivestream',
-    name: 'Server 6 (RiveStream HD)',
+    name: 'Server 5 (RiveStream HD)',
     quality: '1080p / 720p',
     speed: 'Fast',
     reliability: 94,
@@ -51,7 +43,7 @@ export const SERVERS: VideoServer[] = [
   },
   {
     id: '2embed',
-    name: 'Server 7 (2Embed)',
+    name: 'Server 6 (2Embed)',
     quality: '1080p / 720p',
     speed: 'Fast',
     reliability: 92,
@@ -59,7 +51,7 @@ export const SERVERS: VideoServer[] = [
   },
   {
     id: 'vidsrc-net',
-    name: 'Server 8 (VidSrc Net)',
+    name: 'Server 7 (VidSrc Net)',
     quality: '720p / 1080p',
     speed: 'Normal',
     reliability: 90,
@@ -77,11 +69,6 @@ export function getEmbedUrl(
   const isMovie = mediaType === 'movie';
 
   switch (serverId) {
-    case 'vidlink':
-      return isMovie
-        ? `https://vidlink.pro/movie/${tmdbId}?primaryColor=F9E154&secondaryColor=E94B3C`
-        : `https://vidlink.pro/tv/${tmdbId}/${season}/${episode}?primaryColor=F9E154&secondaryColor=E94B3C`;
-
     case 'vidsrc-me':
     case 'vidsrc-pro':
       return isMovie

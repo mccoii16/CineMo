@@ -1,5 +1,5 @@
 {
-  "name": "CineHD App",
+  "name": "CineMO HD",
   "description": "A sleek streaming aggregator client replicating CineHD with TMDB metadata, multi-server video player embed switching, TV season/episode browser, Live TV channels, and watchlist management.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

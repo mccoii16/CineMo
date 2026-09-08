@@ -67,7 +67,7 @@ export const ServerGuideModal: React.FC<ServerGuideModalProps> = ({ isOpen, onCl
             <ol className="list-decimal list-inside space-y-1 text-white/70 text-xs leading-relaxed font-medium uppercase tracking-wide">
               <li><strong className="text-white font-black">TMDB Metadata:</strong> Content details (posters, cast, seasons, episode numbers) are retrieved directly from The Movie Database API.</li>
               <li><strong className="text-white font-black">Dynamic Stream Resolver:</strong> When you hit play, the selected server receives the TMDB ID (or Season/Episode numbers for TV shows) and serves the video stream.</li>
-              <li><strong className="text-white font-black">Instant Server Switcher:</strong> If a stream buffers or is blocked, switch to Server 2 (VidLink Ultra), Server 3 (VidSrc TO), Server 4 (VidSrc Net), or Server 5 (RiveStream) with a single click.</li>
+              <li><strong className="text-white font-black">Instant Server Switcher:</strong> If a stream buffers or is blocked, switch to Server 2 (VidSrc TO), Server 3 (VidSrc PM), or Server 5 (RiveStream) with a single click.</li>
             </ol>
           </div>
 
@@ -75,7 +75,7 @@ export const ServerGuideModal: React.FC<ServerGuideModalProps> = ({ isOpen, onCl
             <Info className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
             <div>
               <span className="font-black uppercase tracking-wider text-yellow-400 block mb-0.5">Pro Tip for Smooth Playback:</span>
-              If an embedded video displays an error or fails to load, simply click another server pill in the video player header (e.g. Server 2 VidLink Ultra or Server 3 VidSrc TO).
+              If an embedded video displays an error or fails to load, simply click another server pill in the video player header (e.g. Server 2 VidSrc TO or Server 3 VidSrc PM).
             </div>
           </div>
         </div>

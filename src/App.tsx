@@ -63,7 +63,11 @@ export default function App() {
   });
 
   const [defaultServer, setDefaultServer] = useState<string>(() => {
-    return localStorage.getItem('cinehd_default_server') || SERVERS[0].id;
+    const saved = localStorage.getItem('cinehd_default_server');
+    if (saved && SERVERS.some(s => s.id === saved)) {
+      return saved;
+    }
+    return SERVERS[0].id;
   });
 
   // Save watchlist to LocalStorage

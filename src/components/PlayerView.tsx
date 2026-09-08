@@ -41,7 +41,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   onOpenTrailer,
   onUpdateHistory,
 }) => {
-  const [activeServerId, setActiveServerId] = useState<string>(defaultServerId || SERVERS[0].id);
+  const [activeServerId, setActiveServerId] = useState<string>(() =>
+    SERVERS.some(s => s.id === defaultServerId) ? defaultServerId : SERVERS[0].id
+  );
   const [seasonNum, setSeasonNum] = useState<number>(1);
   const [episodeNum, setEpisodeNum] = useState<number>(1);
   const [episodeTitle, setEpisodeTitle] = useState<string>('');
@@ -212,7 +214,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       <div className="bg-white/5 border border-white/10 rounded p-3 flex flex-wrap items-center justify-between gap-2 text-xs text-white/70">
         <div className="flex items-center space-x-2">
           <ShieldCheck className="w-4 h-4 text-yellow-400 shrink-0" />
-          <span>If player doesn't load or buffers, try switching servers above (<strong>Server 1 VidLink</strong> or <strong>Server 2 VidSrc Pro</strong>).</span>
+          <span>If player doesn't load or buffers, try switching servers above (<strong>Server 1 VidSrc Pro</strong> or <strong>Server 2 VidSrc TO</strong>).</span>
         </div>
         <button
           onClick={handleOpenNewTab}
