@@ -8,12 +8,17 @@ import {
   Share2,
   Download,
   Info,
+  Shield,
   ShieldCheck,
+  CheckCircle2,
   Check,
   Film,
   Tv,
   Maximize2,
-  ExternalLink
+  ExternalLink,
+  X,
+  AlertTriangle,
+  HelpCircle
 } from 'lucide-react';
 import { MediaItem, ContentType, CastMember } from '../types';
 import { SERVERS, getEmbedUrl } from '../services/servers';
@@ -51,7 +56,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const [cast, setCast] = useState<CastMember[]>([]);
   const [copiedShare, setCopiedShare] = useState<boolean>(false);
   const [showDownloadModal, setShowDownloadModal] = useState<boolean>(false);
-  const [adShieldActive, setAdShieldActive] = useState<boolean>(true);
+  const [showAdTipsModal, setShowAdTipsModal] = useState<boolean>(false);
 
   const isTvShow = media.media_type === 'tv' || media.media_type === 'kdrama' || media.media_type === 'anime';
 
@@ -113,52 +118,51 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   return (
     <div className="space-y-6 animate-fadeIn pb-12">
       {/* Top Header Navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white/5 border border-white/10 p-3 md:p-4 rounded shadow-xl">
-        <button
-          onClick={onBack}
-          className="px-4 py-2 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 text-white font-black uppercase tracking-wider text-xs flex items-center gap-2 transition-all bg-white/5"
-        >
-          <ArrowLeft className="w-4 h-4 text-yellow-400" /> Back to Browse
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/5 border border-white/10 p-3 sm:p-4 rounded shadow-xl">
+        <div className="flex items-center justify-between sm:justify-start gap-2 min-w-0">
+          <button
+            onClick={onBack}
+            className="min-h-[40px] px-3.5 py-2 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 text-white font-black uppercase tracking-wider text-xs flex items-center gap-1.5 transition-all bg-white/5 rounded-sm shrink-0 touch-manipulation"
+          >
+            <ArrowLeft className="w-4 h-4 text-yellow-400" /> <span>Back</span>
+          </button>
 
-        <div className="flex items-center space-x-2 text-xs text-white/80 min-w-0">
-          <span className="font-black uppercase tracking-tight text-white text-sm md:text-base truncate max-w-[200px] sm:max-w-xs md:max-w-md">
-            {media.title}
-          </span>
-          {isTvShow && (
-            <span className="px-2 py-0.5 rounded-sm bg-yellow-400 text-black font-black text-[10px] tracking-wider uppercase">
-              S{seasonNum}:E{episodeNum}
+          <div className="flex items-center space-x-1.5 text-xs text-white/80 min-w-0 truncate">
+            <span className="font-black uppercase tracking-tight text-white text-sm md:text-base truncate">
+              {media.title}
             </span>
-          )}
-          <span className="px-2 py-0.5 rounded-sm bg-white/10 text-white/70 text-[10px] uppercase font-black">
-            {media.quality || '4K'}
-          </span>
+            {isTvShow && (
+              <span className="px-1.5 py-0.5 rounded-sm bg-yellow-400 text-black font-black text-[10px] tracking-wider uppercase shrink-0">
+                S{seasonNum}:E{episodeNum}
+              </span>
+            )}
+            <span className="hidden xs:inline-block px-1.5 py-0.5 rounded-sm bg-white/10 text-white/70 text-[10px] uppercase font-black shrink-0">
+              {media.quality || '4K'}
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between sm:justify-end space-x-2 border-t sm:border-t-0 border-white/10 pt-2.5 sm:pt-0">
           <button
-            onClick={() => setAdShieldActive(!adShieldActive)}
-            className={`px-3 py-1.5 rounded transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border ${
-              adShieldActive
-                ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/20'
-                : 'bg-white/5 border-white/20 text-white/50 hover:text-white'
-            }`}
-            title={adShieldActive ? 'Ad & Popup Blocker Active (Click to toggle)' : 'Ad Blocker Disabled (Click to toggle)'}
+            onClick={() => setShowAdTipsModal(true)}
+            className="flex-1 sm:flex-initial min-h-[38px] px-3 py-1.5 rounded transition-all text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 border border-yellow-400/30 text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400 hover:text-black active:bg-yellow-400 active:text-black touch-manipulation"
+            title="Tips for ad-free streaming, popups, and mirror servers"
           >
-            <ShieldCheck className={`w-3.5 h-3.5 ${adShieldActive ? 'text-emerald-400' : 'text-white/40'}`} />
-            <span>Ad-Shield: {adShieldActive ? 'ON' : 'OFF'}</span>
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Ad & Stream Tips</span>
           </button>
           <button
             onClick={handleOpenNewTab}
-            className="px-3 py-1.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400 hover:text-black rounded transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5"
+            className="min-h-[38px] px-3 py-1.5 bg-white/5 border border-white/20 text-white hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 active:text-yellow-400 rounded transition-all text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 touch-manipulation"
             title="Open video player directly in new tab"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            <span>Open in Tab</span>
+            <span className="hidden sm:inline">Open in Tab</span>
+            <span className="sm:hidden">Pop-out</span>
           </button>
           <button
             onClick={handleReload}
-            className="p-2 bg-white/5 border border-white/10 hover:border-yellow-400 text-white/80 hover:text-yellow-400 rounded transition-colors text-xs flex items-center gap-1"
+            className="min-h-[38px] min-w-[38px] p-2 bg-white/5 border border-white/10 hover:border-yellow-400 active:border-yellow-400 text-white/80 hover:text-yellow-400 rounded transition-colors text-xs flex items-center justify-center touch-manipulation"
             title="Reload Player Stream"
           >
             <RotateCw className={`w-4 h-4 ${loadingIframe ? 'animate-spin text-yellow-400' : ''}`} />
@@ -177,14 +181,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full custom-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full touch-scroll no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
           {SERVERS.map(srv => {
             const isActive = srv.id === activeServerId;
             return (
               <button
                 key={srv.id}
                 onClick={() => handleServerChange(srv.id)}
-                className={`server-pill px-4 py-2 rounded text-xs font-bold uppercase transition shrink-0 flex items-center gap-2 ${
+                className={`server-pill px-3.5 sm:px-4 py-2 rounded text-xs font-bold uppercase transition shrink-0 flex items-center gap-2 min-h-[38px] touch-manipulation ${
                   isActive
                     ? 'border-yellow-400 text-yellow-400 bg-yellow-400/10'
                     : 'text-white/70'
@@ -213,14 +217,13 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
         <iframe
           id="cinehd-player-iframe"
-          key={`${activeServerId}-${adShieldActive}`}
+          key={`${activeServerId}-${seasonNum}-${episodeNum}`}
           src={embedUrl}
           title={media.title}
           onLoad={() => setLoadingIframe(false)}
           className="w-full h-full border-0"
           allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-          sandbox={adShieldActive ? "allow-scripts allow-same-origin allow-forms allow-presentation" : undefined}
+          referrerPolicy="origin"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
         ></iframe>
       </div>
@@ -228,15 +231,16 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       {/* Server Notice Banner */}
       <div className="bg-white/5 border border-white/10 rounded p-3 flex flex-wrap items-center justify-between gap-2 text-xs text-white/70">
         <div className="flex items-center space-x-2">
-          <ShieldCheck className={`w-4 h-4 shrink-0 ${adShieldActive ? 'text-emerald-400' : 'text-yellow-400'}`} />
+          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
           <span>
-            {adShieldActive && (
-              <span className="text-emerald-400 font-bold uppercase tracking-wide mr-1.5">
-                Ad-Shield Active:
-              </span>
-            )}
-            {adShieldActive ? 'Pop-up ads on video clicks are blocked. ' : ''}
-            If video buffers or fails, try switching servers above (<strong>Server 1 VidSrc Pro</strong> or <strong>Server 2 VidSrc TO</strong>).
+            <strong className="text-white">Active Mirror: {activeServerObj.name}.</strong>
+            {' '}Unrestricted stream embed loaded. If video buffers or has ads, switch servers above or view{' '}
+            <button
+              onClick={() => setShowAdTipsModal(true)}
+              className="text-yellow-400 underline font-bold hover:text-yellow-300"
+            >
+              Ad & Streaming Tips
+            </button>.
           </span>
         </div>
         <button
@@ -270,39 +274,40 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={e => onToggleBookmark(media, e)}
-            className={`px-5 py-3 border-2 font-black uppercase text-xs tracking-wider transition-all flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-3 sm:px-5 py-2.5 sm:py-3 border-2 font-black uppercase text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 rounded-sm touch-manipulation active:scale-95 ${
               isBookmarked
                 ? 'bg-red-600 text-white border-red-500'
-                : 'border-white/20 text-white hover:border-yellow-400 hover:text-yellow-400 bg-white/5'
+                : 'border-white/20 text-white hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 bg-white/5'
             }`}
           >
             <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-            {isBookmarked ? 'In My List' : 'Add to List'}
+            <span className="truncate">{isBookmarked ? 'In List' : 'Add to List'}</span>
           </button>
 
           <button
             onClick={() => onOpenTrailer(media)}
-            className="px-5 py-3 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 bg-white/5 text-white font-black uppercase tracking-wider text-xs transition-colors flex items-center gap-1.5"
+            className="min-h-[44px] px-3 sm:px-5 py-2.5 sm:py-3 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 active:text-yellow-400 bg-white/5 text-white font-black uppercase tracking-wider text-xs transition-colors flex items-center justify-center gap-1.5 rounded-sm touch-manipulation active:scale-95"
           >
-            <Info className="w-4 h-4 text-yellow-400" /> Trailer
+            <Info className="w-4 h-4 text-yellow-400" /> <span>Trailer</span>
           </button>
 
           <button
             onClick={() => setShowDownloadModal(true)}
-            className="px-5 py-3 border-2 border-yellow-400/50 bg-yellow-400/10 hover:bg-yellow-400 hover:text-black text-yellow-400 font-black uppercase tracking-wider text-xs transition-colors flex items-center gap-1.5"
+            className="min-h-[44px] px-3 sm:px-5 py-2.5 sm:py-3 border-2 border-yellow-400/50 bg-yellow-400/10 hover:bg-yellow-400 hover:text-black active:bg-yellow-400 active:text-black text-yellow-400 font-black uppercase tracking-wider text-xs transition-colors flex items-center justify-center gap-1.5 rounded-sm touch-manipulation active:scale-95"
           >
-            <Download className="w-4 h-4" /> Download
+            <Download className="w-4 h-4" /> <span>Download</span>
           </button>
 
           <button
             onClick={handleShare}
-            className="p-3 bg-white/5 border-2 border-white/20 hover:border-yellow-400 text-white hover:text-yellow-400 text-xs transition-colors"
+            className="min-h-[44px] p-2.5 sm:p-3 bg-white/5 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 text-white text-xs transition-colors flex items-center justify-center gap-1.5 rounded-sm touch-manipulation active:scale-95"
             title="Share Link"
           >
             {copiedShare ? <Check className="w-4 h-4 text-yellow-400" /> : <Share2 className="w-4 h-4" />}
+            <span className="sm:hidden text-xs font-black uppercase">{copiedShare ? 'Copied' : 'Share'}</span>
           </button>
         </div>
       </div>
@@ -318,14 +323,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       )}
 
       {/* Synopsis & Details */}
-      <div className="bg-white/5 border border-white/10 rounded p-6 space-y-4">
+      <div className="bg-white/5 border border-white/10 rounded p-4 sm:p-6 space-y-3 sm:space-y-4">
         <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/50 border-b border-white/10 pb-2">Overview & Storyline</h3>
-        <p className="text-white/80 text-sm leading-relaxed font-medium">{media.overview}</p>
+        <p className="text-white/80 text-xs sm:text-sm leading-relaxed font-medium">{media.overview}</p>
 
         {media.genres && media.genres.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
             {media.genres.map(g => (
-              <span key={g.id} className="px-3 py-1 bg-white/5 text-white/80 text-xs font-bold uppercase rounded-sm border border-white/10">
+              <span key={g.id} className="px-2.5 py-1 bg-white/5 text-white/80 text-[11px] sm:text-xs font-bold uppercase rounded-sm border border-white/10">
                 {g.name}
               </span>
             ))}
@@ -335,15 +340,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
       {/* Cast & Crew Section */}
       {cast.length > 0 && (
-        <div className="bg-white/5 border border-white/10 rounded p-6 space-y-4">
-          <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/50 border-b border-white/10 pb-2">Top Cast</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+        <div className="bg-white/5 border border-white/10 rounded p-4 sm:p-6 space-y-3 sm:space-y-4">
+          <div className="flex items-center justify-between border-b border-white/10 pb-2">
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/50">Top Cast</h3>
+            <span className="text-[10px] text-white/40 uppercase sm:hidden">Swipe →</span>
+          </div>
+          <div className="flex overflow-x-auto pb-2 gap-3 touch-scroll no-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6">
             {cast.map(c => (
-              <div key={c.id} className="flex flex-col items-center text-center bg-[#080808] border border-white/10 p-3 rounded">
+              <div key={c.id} className="flex flex-col items-center text-center bg-[#080808] border border-white/10 p-3 rounded shrink-0 w-28 sm:w-auto">
                 <img
                   src={getImageUrl(c.profile_path)}
                   alt={c.name}
-                  className="w-16 h-16 rounded-full object-cover mb-2 border border-white/20"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover mb-2 border border-white/20"
                 />
                 <span className="text-xs font-bold uppercase text-white line-clamp-1">{c.name}</span>
                 <span className="text-[10px] text-white/50 font-medium uppercase line-clamp-1 mt-0.5">{c.character}</span>
@@ -356,14 +364,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       {/* Download Simulator Modal */}
       {showDownloadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fadeIn">
-          <div className="relative w-full max-w-md bg-[#080808] border border-white/10 rounded p-6 shadow-2xl text-white">
+          <div className="relative w-full max-w-md bg-[#080808] border border-white/10 rounded p-5 sm:p-6 shadow-2xl text-white max-h-[90vh] overflow-y-auto">
             <h3 className="text-base font-black uppercase tracking-tight text-white mb-1 flex items-center gap-2">
               <Download className="w-5 h-5 text-yellow-400" /> Download {media.title}
             </h3>
             <p className="text-xs text-white/50 font-medium mb-4 uppercase tracking-wider">Select quality resolution and subtitle track for offline viewing</p>
 
             <div className="space-y-2 text-xs mb-6">
-              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors">
+              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors active:scale-[0.98]">
                 <div>
                   <span className="font-bold text-white uppercase block">4K Ultra HD (.MP4)</span>
                   <span className="text-white/50 text-[11px] font-medium">Bitrate: 22 Mbps • 2160p</span>
@@ -371,7 +379,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <span className="px-2.5 py-1 bg-yellow-400 text-black font-black rounded-sm text-[11px]">~4.2 GB</span>
               </div>
 
-              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors">
+              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors active:scale-[0.98]">
                 <div>
                   <span className="font-bold text-white uppercase block">1080p Full HD (.MP4)</span>
                   <span className="text-white/50 text-[11px] font-medium">Bitrate: 8 Mbps • Multi-Subtitles</span>
@@ -379,7 +387,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <span className="px-2.5 py-1 bg-white/10 text-yellow-400 font-bold rounded-sm text-[11px]">~1.8 GB</span>
               </div>
 
-              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors">
+              <div className="p-3 bg-white/5 border border-white/10 rounded flex items-center justify-between hover:border-yellow-400/50 cursor-pointer transition-colors active:scale-[0.98]">
                 <div>
                   <span className="font-bold text-white uppercase block">720p HD Standard (.MP4)</span>
                   <span className="text-white/50 text-[11px] font-medium">Optimized for mobile & low data</span>
@@ -391,9 +399,91 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             <div className="flex justify-end">
               <button
                 onClick={() => setShowDownloadModal(false)}
-                className="px-6 py-2.5 border border-white/20 hover:border-yellow-400 text-white font-black uppercase tracking-wider text-xs bg-white/5"
+                className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 border border-white/20 hover:border-yellow-400 active:border-yellow-400 text-white font-black uppercase tracking-wider text-xs bg-white/5 touch-manipulation"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Ad & Streaming Tips Modal */}
+      {showAdTipsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-3 sm:p-4 animate-fadeIn">
+          <div className="relative w-full max-w-lg bg-[#080808] border border-white/10 rounded p-5 sm:p-6 shadow-2xl text-white max-h-[90vh] overflow-y-auto touch-scroll">
+            <button
+              onClick={() => setShowAdTipsModal(false)}
+              className="absolute top-3.5 right-3.5 p-2 rounded hover:bg-white/10 text-white/50 hover:text-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center space-x-2 text-yellow-400 mb-1.5">
+              <ShieldCheck className="w-5 h-5" />
+              <h3 className="text-base sm:text-lg font-black uppercase tracking-tight text-white">
+                Streaming & Ad Guide
+              </h3>
+            </div>
+            <p className="text-xs text-white/50 font-medium uppercase tracking-wider mb-5">
+              How video embeds work & recommendations for a 100% ad-free experience
+            </p>
+
+            <div className="space-y-4 text-xs">
+              {/* Explanation of the sandboxed frame error */}
+              <div className="p-3.5 bg-yellow-400/10 border border-yellow-400/30 rounded space-y-1.5">
+                <div className="flex items-center gap-2 text-yellow-400 font-bold uppercase tracking-wider">
+                  <Info className="w-4 h-4 shrink-0" />
+                  <span>Why Did "Sandboxed Frame" Error Occur?</span>
+                </div>
+                <p className="text-white/80 leading-relaxed text-[11px]">
+                  Third-party video streaming hosts (such as VidSrc) intentionally check for the HTML5 <code className="text-yellow-400 font-mono">sandbox</code> attribute. If sandbox is detected, their player halts and displays that warning screen. We have removed the sandbox attribute so all mirror servers load and play smoothly.
+                </p>
+              </div>
+
+              {/* Tips for ad-free watching */}
+              <div className="space-y-2.5">
+                <h4 className="font-bold uppercase tracking-wider text-white">Best Ways to Stream Without Ads:</h4>
+
+                <div className="p-3 bg-white/5 border border-white/10 rounded space-y-1">
+                  <div className="flex items-center gap-2 text-emerald-400 font-bold uppercase">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>1. Use Brave Browser or uBlock Origin</span>
+                  </div>
+                  <p className="text-white/60 text-[11px] leading-relaxed">
+                    Browser extensions like <strong>uBlock Origin</strong>, <strong>AdGuard</strong>, or using <strong>Brave Browser</strong> block pop-up ad networks at the DNS/network level without breaking the video player.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white/5 border border-white/10 rounded space-y-1">
+                  <div className="flex items-center gap-2 text-yellow-400 font-bold uppercase">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>2. Quick Popup Dismissal</span>
+                  </div>
+                  <p className="text-white/60 text-[11px] leading-relaxed">
+                    On standard browsers, the host may open one pop-up tab on first play. Simply close that tab and return here to enjoy uninterrupted playback.
+                  </p>
+                </div>
+
+                <div className="p-3 bg-white/5 border border-white/10 rounded space-y-1">
+                  <div className="flex items-center gap-2 text-white font-bold uppercase">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>3. Try Different Mirror Servers</span>
+                  </div>
+                  <p className="text-white/60 text-[11px] leading-relaxed">
+                    We provide 7 CDN mirrors above. If one mirror is slow or has excessive redirects, tap <strong>Server 2 (VidSrc TO)</strong>, <strong>Server 5 (RiveStream)</strong>, or <strong>Server 6 (2Embed)</strong> for an alternate stream.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setShowAdTipsModal(false)}
+                className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 bg-yellow-400 text-black font-black uppercase tracking-wider text-xs hover:bg-yellow-300 active:bg-yellow-300 transition-colors rounded-sm touch-manipulation"
+              >
+                Got It, Let's Watch
               </button>
             </div>
           </div>

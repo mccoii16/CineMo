@@ -11,18 +11,19 @@ export const TrailerModal: React.FC<TrailerModalProps> = ({ youtubeKey, title, o
   if (!youtubeKey) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
       <div className="relative w-full max-w-4xl bg-[#080808] border border-white/10 rounded overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/80">
-          <div className="flex items-center space-x-2">
-            <span className="bg-yellow-400 text-black text-xs px-2 py-0.5 rounded-sm font-black uppercase tracking-wider">Trailer</span>
-            <h3 className="text-base font-black uppercase tracking-tight text-white truncate max-w-md">{title} - Official Trailer</h3>
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10 bg-black/80">
+          <div className="flex items-center space-x-2 min-w-0 pr-2">
+            <span className="bg-yellow-400 text-black text-[10px] sm:text-xs px-2 py-0.5 rounded-sm font-black uppercase tracking-wider shrink-0">Trailer</span>
+            <h3 className="text-xs sm:text-base font-black uppercase tracking-tight text-white truncate">{title}</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded hover:bg-white/10 text-white/50 hover:text-white transition-colors"
+            className="p-2 sm:p-2 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
+            aria-label="Close trailer"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
         <div className="relative aspect-video w-full bg-black">

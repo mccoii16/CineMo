@@ -26,19 +26,41 @@ body {
   }
 
   .movie-title {
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
-    line-height: 0.9;
+    font-size: clamp(1.6rem, 6vw, 5.5rem);
+    line-height: 0.95;
     font-weight: 900;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.04em;
     text-transform: uppercase;
+  }
+
+  /* Touch momentum scroll for horizontal lists */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Hide scrollbar for mobile carousels & chip lists */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Safe area padding for iPhones with home indicator */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
   }
 
   .server-pill {
     border: 1px solid rgba(255, 255, 255, 0.15);
     background-color: rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
+    touch-action: manipulation;
   }
-  .server-pill:hover {
+  .server-pill:hover, .server-pill:active {
     border-color: #facc15;
     color: #facc15;
     background-color: rgba(250, 204, 21, 0.08);

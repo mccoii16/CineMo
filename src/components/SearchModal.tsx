@@ -39,8 +39,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 bg-black/90 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-[#080808] border border-white/10 rounded p-4 shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-3 sm:pt-16 md:pt-24 bg-black/90 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+      <div className="relative w-full max-w-2xl bg-[#080808] border border-white/10 rounded p-3 sm:p-4 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[85vh]">
         {/* Search Header Input */}
         <div className="relative flex items-center border-b border-white/10 pb-3">
           <Search className="w-5 h-5 text-yellow-400 absolute left-3 pointer-events-none" />
@@ -49,30 +49,32 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
             autoFocus
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="SEARCH MOVIES, TV SERIES, ANIME, ASIAN DRAMAS..."
-            className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded text-white text-xs font-bold uppercase tracking-wider focus:outline-none focus:border-yellow-400 placeholder:text-white/40 placeholder:font-medium"
+            placeholder="Search movies, TV series, anime, dramas..."
+            className="w-full pl-10 pr-10 py-2.5 sm:py-2.5 bg-white/5 border border-white/10 rounded text-white text-[16px] sm:text-xs font-bold uppercase tracking-wider focus:outline-none focus:border-yellow-400 placeholder:text-white/40 placeholder:font-medium touch-manipulation"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-10 p-1 text-white/50 hover:text-white"
+              className="absolute right-12 p-2 text-white/50 hover:text-white min-h-[36px] min-w-[36px] flex items-center justify-center"
+              aria-label="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
           )}
           <button
             onClick={onClose}
-            className="ml-2 p-2 rounded text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            className="ml-2 p-2.5 rounded text-white/70 hover:text-white hover:bg-white/10 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
+            aria-label="Close search"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center space-x-2 my-3 px-1 text-xs">
+        <div className="flex items-center space-x-2 my-2.5 px-0.5 text-xs overflow-x-auto touch-scroll no-scrollbar">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`px-3 py-1 rounded text-xs font-extrabold uppercase tracking-wider transition-all ${
+            className={`min-h-[36px] px-3.5 py-1.5 rounded text-xs font-extrabold uppercase tracking-wider transition-all shrink-0 touch-manipulation ${
               activeFilter === 'all'
                 ? 'bg-yellow-400 text-black border border-yellow-400'
                 : 'bg-white/5 text-white/70 hover:text-yellow-400 border border-white/10'
@@ -82,7 +84,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
           </button>
           <button
             onClick={() => setActiveFilter('movie')}
-            className={`px-3 py-1 rounded text-xs font-extrabold uppercase tracking-wider transition-all ${
+            className={`min-h-[36px] px-3.5 py-1.5 rounded text-xs font-extrabold uppercase tracking-wider transition-all shrink-0 touch-manipulation ${
               activeFilter === 'movie'
                 ? 'bg-yellow-400 text-black border border-yellow-400'
                 : 'bg-white/5 text-white/70 hover:text-yellow-400 border border-white/10'
@@ -92,7 +94,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
           </button>
           <button
             onClick={() => setActiveFilter('tv')}
-            className={`px-3 py-1 rounded text-xs font-extrabold uppercase tracking-wider transition-all ${
+            className={`min-h-[36px] px-3.5 py-1.5 rounded text-xs font-extrabold uppercase tracking-wider transition-all shrink-0 touch-manipulation ${
               activeFilter === 'tv'
                 ? 'bg-yellow-400 text-black border border-yellow-400'
                 : 'bg-white/5 text-white/70 hover:text-yellow-400 border border-white/10'
@@ -103,7 +105,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
         </div>
 
         {/* Results List */}
-        <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto space-y-2 pr-1 touch-scroll custom-scrollbar">
           {loading && (
             <div className="py-12 text-center text-white/50 text-xs font-bold uppercase tracking-wider flex flex-col items-center gap-2">
               <div className="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
@@ -124,19 +126,19 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                 onSelectMedia(item);
                 onClose();
               }}
-              className="flex items-center justify-between p-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 hover:border-yellow-400/60 cursor-pointer group transition-all"
+              className="flex items-center justify-between p-2.5 rounded bg-white/5 hover:bg-white/10 active:scale-[0.99] border border-white/10 hover:border-yellow-400/60 cursor-pointer group transition-all touch-manipulation select-none"
             >
-              <div className="flex items-center space-x-3 min-w-0">
+              <div className="flex items-center space-x-3 min-w-0 flex-1 mr-2">
                 <img
                   src={getImageUrl(item.poster_path)}
                   alt={item.title}
                   className="w-11 h-16 object-cover rounded-sm shrink-0 shadow-md group-hover:scale-105 transition-transform"
                 />
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <h4 className="text-xs font-bold uppercase text-white group-hover:text-yellow-400 truncate">
                     {item.title}
                   </h4>
-                  <div className="flex items-center space-x-2 text-[10px] font-medium opacity-60 uppercase tracking-wider text-white mt-1">
+                  <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-medium opacity-60 uppercase tracking-wider text-white mt-1">
                     <span className="uppercase px-1.5 py-0.5 bg-yellow-400 text-black font-black rounded-sm flex items-center gap-1">
                       {item.media_type === 'movie' ? <Film className="w-3 h-3" /> : <Tv className="w-3 h-3" />}
                       {item.media_type}
@@ -149,7 +151,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                 </div>
               </div>
 
-              <div className="p-2.5 bg-white text-black font-black group-hover:bg-yellow-400 transition-all shrink-0">
+              <div className="p-2.5 bg-white text-black font-black group-hover:bg-yellow-400 rounded-none transition-all shrink-0">
                 <Play className="w-4 h-4 fill-current" />
               </div>
             </div>

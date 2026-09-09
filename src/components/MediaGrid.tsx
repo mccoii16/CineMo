@@ -49,10 +49,10 @@ export const MediaGrid: React.FC<MediaGridProps> = ({
 
         {/* Genre Pills */}
         {genreList && onGenreSelect && (
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full custom-scrollbar">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full touch-scroll no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             <button
               onClick={() => onGenreSelect(undefined)}
-              className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all touch-manipulation min-h-[36px] ${
                 selectedGenreId === undefined
                   ? 'bg-yellow-400 text-black font-black border border-yellow-400'
                   : 'bg-white/5 text-white/70 hover:text-yellow-400 border border-white/10 hover:border-yellow-400/50'
@@ -64,7 +64,7 @@ export const MediaGrid: React.FC<MediaGridProps> = ({
               <button
                 key={gId}
                 onClick={() => onGenreSelect(gId)}
-                className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
+                className={`px-3.5 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all touch-manipulation min-h-[36px] ${
                   selectedGenreId === gId
                     ? 'bg-yellow-400 text-black font-black border border-yellow-400'
                     : 'bg-white/5 text-white/70 hover:text-yellow-400 border border-white/10 hover:border-yellow-400/50'
@@ -79,7 +79,7 @@ export const MediaGrid: React.FC<MediaGridProps> = ({
 
       {/* Grid Cards */}
       {items.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3 md:gap-4">
           {items.map(item => (
             <MediaCard
               key={`${item.media_type}-${item.id}`}
@@ -102,7 +102,7 @@ export const MediaGrid: React.FC<MediaGridProps> = ({
           <button
             onClick={onLoadMore}
             disabled={loading}
-            className="px-8 py-3 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 bg-white/5 text-white font-black uppercase tracking-wider text-xs transition-all"
+            className="w-full sm:w-auto min-h-[44px] px-8 py-3 border-2 border-white/20 hover:border-yellow-400 hover:text-yellow-400 active:border-yellow-400 active:text-yellow-400 bg-white/5 text-white font-black uppercase tracking-wider text-xs transition-all touch-manipulation"
           >
             {loading ? 'Loading More Releases...' : 'Explore More Releases'}
           </button>
