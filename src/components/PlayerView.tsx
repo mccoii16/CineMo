@@ -51,6 +51,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const [cast, setCast] = useState<CastMember[]>([]);
   const [copiedShare, setCopiedShare] = useState<boolean>(false);
   const [showDownloadModal, setShowDownloadModal] = useState<boolean>(false);
+  const [adShieldActive, setAdShieldActive] = useState<boolean>(true);
 
   const isTvShow = media.media_type === 'tv' || media.media_type === 'kdrama' || media.media_type === 'anime';
 
@@ -136,6 +137,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
         <div className="flex items-center space-x-2">
           <button
+            onClick={() => setAdShieldActive(!adShieldActive)}
+            className={`px-3 py-1.5 rounded transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border ${
+              adShieldActive
+                ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/20'
+                : 'bg-white/5 border-white/20 text-white/50 hover:text-white'
+            }`}
+            title={adShieldActive ? 'Ad & Popup Blocker Active (Click to toggle)' : 'Ad Blocker Disabled (Click to toggle)'}
+          >
+            <ShieldCheck className={`w-3.5 h-3.5 ${adShieldActive ? 'text-emerald-400' : 'text-white/40'}`} />
+            <span>Ad-Shield: {adShieldActive ? 'ON' : 'OFF'}</span>
+          </button>
+          <button
             onClick={handleOpenNewTab}
             className="px-3 py-1.5 bg-yellow-400/10 border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400 hover:text-black rounded transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5"
             title="Open video player directly in new tab"
@@ -200,12 +213,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
         <iframe
           id="cinehd-player-iframe"
+          key={`${activeServerId}-${adShieldActive}`}
           src={embedUrl}
           title={media.title}
           onLoad={() => setLoadingIframe(false)}
           className="w-full h-full border-0"
           allowFullScreen
           referrerPolicy="no-referrer-when-downgrade"
+          sandbox={adShieldActive ? "allow-scripts allow-same-origin allow-forms allow-presentation" : undefined}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
         ></iframe>
       </div>
@@ -213,8 +228,16 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       {/* Server Notice Banner */}
       <div className="bg-white/5 border border-white/10 rounded p-3 flex flex-wrap items-center justify-between gap-2 text-xs text-white/70">
         <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-4 h-4 text-yellow-400 shrink-0" />
-          <span>If player doesn't load or buffers, try switching servers above (<strong>Server 1 VidSrc Pro</strong> or <strong>Server 2 VidSrc TO</strong>).</span>
+          <ShieldCheck className={`w-4 h-4 shrink-0 ${adShieldActive ? 'text-emerald-400' : 'text-yellow-400'}`} />
+          <span>
+            {adShieldActive && (
+              <span className="text-emerald-400 font-bold uppercase tracking-wide mr-1.5">
+                Ad-Shield Active:
+              </span>
+            )}
+            {adShieldActive ? 'Pop-up ads on video clicks are blocked. ' : ''}
+            If video buffers or fails, try switching servers above (<strong>Server 1 VidSrc Pro</strong> or <strong>Server 2 VidSrc TO</strong>).
+          </span>
         </div>
         <button
           onClick={handleOpenNewTab}

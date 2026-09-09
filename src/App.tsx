@@ -211,7 +211,6 @@ export default function App() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenSearch={() => setSearchOpen(true)}
-        onOpenServerGuide={() => setServerGuideOpen(true)}
         onOpenSettings={() => setSettingsOpen(true)}
         watchlistCount={watchlist.length}
       />

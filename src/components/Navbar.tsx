@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Search, Server, Settings, Bookmark, Tv, Film, Play, Menu, X, Sparkles, HelpCircle } from 'lucide-react';
+import { Search, Settings, Bookmark, Tv, Film, Play, Menu, X, Sparkles, HelpCircle } from 'lucide-react';
 import { ContentType } from '../types';
 
 interface NavbarProps {
   activeTab: ContentType | 'home' | 'watchlist';
   onTabChange: (tab: ContentType | 'home' | 'watchlist') => void;
   onOpenSearch: () => void;
-  onOpenServerGuide: () => void;
+  onOpenServerGuide?: () => void;
   onOpenSettings: () => void;
   watchlistCount: number;
 }
@@ -15,7 +15,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onTabChange,
   onOpenSearch,
-  onOpenServerGuide,
   onOpenSettings,
   watchlistCount,
 }) => {
@@ -82,15 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Search className="w-3.5 h-3.5 text-yellow-400" />
               <span className="hidden sm:inline text-white/70">Search movies...</span>
-            </button>
-
-            <button
-              onClick={onOpenServerGuide}
-              className="server-pill px-3.5 py-2 rounded text-xs font-bold uppercase flex items-center gap-1.5"
-              title="Server Info & Status"
-            >
-              <Server className="w-3.5 h-3.5 text-yellow-400" />
-              <span className="hidden md:inline">Servers</span>
             </button>
 
             <button
